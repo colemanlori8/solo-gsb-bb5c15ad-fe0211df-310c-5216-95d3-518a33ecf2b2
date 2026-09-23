@@ -1,0 +1,18 @@
+services:
+  invoice-api:
+    build: .
+    image: invoice-tax-api:1.0.0
+    container_name: invoice-tax-api
+    ports:
+      - "${HOST_PORT:-8000}:8000"
+    environment:
+      # SQLite 数据库文件路径（容器内），数据由命名卷持久化
+      SQLITE_PATH: /data/invoices.db
+      # 可选：覆盖/扩展币种最小单位，JSON 格式
+      # CURRENCY_MIN_UNITS: '{"CNY":"0.01","USD":"0.01","JPY":"1","XAU":"0.0001"}'
+    volumes:
+      - invoice-data:/data
+    restart: unless-stopped
+
+volumes:
+  invoice-data:
